@@ -11,8 +11,8 @@ st.title("Utility Outage Duration Prediction Dashboard")
 # Load model & scaler
 @st.cache_resource
 def load_assets():
-    with open("outage_model_rf.pkl", "rb") as f:
-        model = pickle.load(f)
+    model = joblib.load("model.joblib")
+ 
     # We assume scaler was saved or we recreate feature order
     feature_names = [
         'temperature_c', 'wind_speed_kmh', 'rainfall_mm',
