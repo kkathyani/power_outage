@@ -37,8 +37,8 @@ if model is None:
     st.stop()
 
 # Optional: show model type for confirmation (you can remove later)
-st.sidebar.markdown("**Loaded Model Type:**")
-st.sidebar.write(type(model))
+# st.sidebar.markdown("**Loaded Model Type:**")
+# st.sidebar.write(type(model))
 
 # ── Sidebar Prediction ───────────────────────────────────────
 with st.sidebar:
