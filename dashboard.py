@@ -40,7 +40,7 @@ model, feature_names = load_assets()
 with st.sidebar:
     st.header("Predict Outage Duration")
     
-    temp = st.slider("Temperature (°C)", -15, 45, 22)
+    temp = st.slider("Temperature (°C)", -15, 50, 22)
     wind = st.slider("Wind Speed (km/h)", 0, 130, 25)
     rain = st.slider("Rainfall (mm)", 0.0, 100.0, 4.5, step=0.5)
     age = st.slider("Equipment Age (years)", 0, 60, 15)
