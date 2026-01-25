@@ -91,24 +91,6 @@ if hasattr(model, "feature_importances_"):
     st.bar_chart(importances.sort_values(ascending=True))
     st.markdown("**Pie Chart – Feature Importance (same values)**")
     
-    fig_pie = px.pie(
-        values=importances.values,
-        names=importances.index,
-        title="Relative Contribution of Each Feature",
-        hole=0.35,                  # donut style – looks cleaner
-        color_discrete_sequence=px.colors.qualitative.Pastel,
-        template="plotly_white"
-    )
     
-    fig_pie.update_traces(
-        textposition='inside',
-        textinfo='percent+label',
-        insidetextorientation='radial'
-    )
-    
-    st.plotly_chart(fig_pie, use_container_width=True)
-
-else:
-    st.warning("Feature importances not available (model may not support it).")
 
 st.caption("Assignment modules separated – KOPPU | Jan 2026")
