@@ -44,12 +44,12 @@ if model is None:
 with st.sidebar:
     st.header("Predict Outage Duration")
 
-    temp = st.slider("Temperature (°C)", -15, 45, 22)
+    temp = st.slider("Temperature (°C)", -15, 50, 22)
     wind = st.slider("Wind Speed (km/h)", 0, 130, 25)
     rain = st.slider("Rainfall (mm)", 0.0, 100.0, 4.5, step=0.5)
     age = st.slider("Equipment Age (years)", 0, 60, 15)
     load = st.slider("Load (MW)", 30, 700, 220)
-    customers = st.slider("Customers Affected", 50, 20000, 1800, step=100)
+    customers = st.slider("Customers Affected", 50, 50000, 1800, step=100)
 
     if st.button("Predict", type="primary"):
         try:
@@ -62,32 +62,53 @@ with st.sidebar:
 # ── Main content ─────────────────────────────────────────────
 col1, col2 = st.columns([5, 4])
 
-with col1:
-    st.subheader("Model Performance (on hold-out set)")
-    st.markdown("""
-    - **MAE**  : ~4.1–5.2 hours  
-    - **RMSE** : ~6.3–7.8 hours  
-    - **R²**   : ~0.84–0.89  
-    *(values depend on exact random seed & model version)*  
-    """)
+# with col1:
+#     st.subheader("Model Performance (on hold-out set)")
+#     st.markdown("""
+#     - **MAE**  : ~4.1–5.2 hours  
+#     - **RMSE** : ~6.3–7.8 hours  
+#     - **R²**   : ~0.84–0.89  
+#     *(values depend on exact random seed & model version)*  
+#     """)
 
-with col2:
-    st.subheader("Input Summary")
-    st.write({
-        "Temperature": f"{temp} °C",
-        "Wind": f"{wind} km/h",
-        "Rain": f"{rain} mm",
-        "Equipment Age": f"{age} years",
-        "Load": f"{load} MW",
-        "Customers": f"{customers:,}"
-    })
+# with col2:
+#     st.subheader("Input Summary")
+#     st.write({
+#         "Temperature": f"{temp} °C",
+#         "Wind": f"{wind} km/h",
+#         "Rain": f"{rain} mm",
+#         "Equipment Age": f"{age} years",
+#         "Load": f"{load} MW",
+#         "Customers": f"{customers:,}"
+#     })
 
-st.markdown("---")
+# st.markdown("---")
 
 # ── Feature Importance (if supported) ───────────────────────
 if hasattr(model, "feature_importances_"):
     st.subheader("Feature Importance")
     importances = pd.Series(model.feature_importances_, index=feature_names)
     st.bar_chart(importances.sort_values(ascending=True))
+    st.markdown("**Pie Chart – Feature Importance (same values)**")
+    
+    fig_pie = px.pie(
+        values=importances.values,
+        names=importances.index,
+        title="Relative Contribution of Each Feature",
+        hole=0.35,                  # donut style – looks cleaner
+        color_discrete_sequence=px.colors.qualitative.Pastel,
+        template="plotly_white"
+    )
+    
+    fig_pie.update_traces(
+        textposition='inside',
+        textinfo='percent+label',
+        insidetextorientation='radial'
+    )
+    
+    st.plotly_chart(fig_pie, use_container_width=True)
+
+else:
+    st.warning("Feature importances not available (model may not support it).")
 
 st.caption("Assignment modules separated – KOPPU | Jan 2026")
