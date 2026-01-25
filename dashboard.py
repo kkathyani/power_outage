@@ -60,7 +60,7 @@ if hasattr(model, "feature_importances_"):
     importances = pd.Series(
         model.feature_importances_,
         index=feature_names
-    ).sort_values(ascending=False)
+    ).sort_values(ascending=True)
 
     # Two-column layout: bar + pie
     col1, col2 = st.columns(2)
